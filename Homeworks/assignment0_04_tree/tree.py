@@ -227,7 +227,7 @@ class DecisionTree(BaseEstimator):
         threshold = -1
         
         for i in range(X_subset.shape[1]):
-            thresholds = np.unique(X_subset[:, i])[1:-1]
+            thresholds = np.sort(np.append(np.unique(X_subset[:, i]), np.unique(X_subset[:, i])[:-1] + np.diff(np.unique(X_subset[:, i]) / 2)))
             for t in thresholds:
                 y_left, y_right = self.make_split_only_y(i, t, X_subset, y_subset)
                 G_new = H(y_subset) - y_left.shape[0] / y_subset.shape[0] * H(y_left) - y_right.shape[0] / y_subset.shape[0] * H(y_right)
@@ -314,14 +314,19 @@ class DecisionTree(BaseEstimator):
     def reccurent_predict(self, X, indexes, node: Node, predictions: dict, proba=False):
         if node.left_child is None:
             for i in indexes:
-                if not proba:
-                    predictions[i] = node.value
-                else:
+                if proba:
                     predictions[i] = node.proba
+                else:
+                    predictions[i] = node.value
         else:
-            left, right = self.make_split(node.feature_index, node.value, X, indexes)
-            self.reccurent_predict(left[0], left[1], node.left_child, predictions)
-            self.reccurent_predict(right[0], right[1], node.right_child, predictions)
+            if proba:
+                left, right = self.make_split(node.feature_index, node.value, X, indexes)
+                self.reccurent_predict(left[0], left[1], node.left_child, predictions, True)
+                self.reccurent_predict(right[0], right[1], node.right_child, predictions, True)
+            else:
+                left, right = self.make_split(node.feature_index, node.value, X, indexes)
+                self.reccurent_predict(left[0], left[1], node.left_child, predictions)
+                self.reccurent_predict(right[0], right[1], node.right_child, predictions)
 
     
     def predict(self, X):
