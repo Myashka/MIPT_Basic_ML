@@ -1,3 +1,5 @@
+___Подробное описание действий приведено либо в самих ноутбуках, либо на README репозитория.___
+
 - Part 1: warmup
 
 No colab link, the part 1 notebook has no code. Please, read it and refer to the
