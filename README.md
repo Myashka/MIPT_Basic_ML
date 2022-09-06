@@ -1,4 +1,4 @@
-# Basic course of Machine leaerning at MIPT.
+# Basic course of Machine learning at MIPT.
 
 [Открытый курс по ML от ФПМИ МФТИ](https://github.com/girafe-ai/ml-course)
 Изучая материалы курсы были прослушаны и законспектированы лекции, выполнены домашние задания. Ниже приведено описание проделанной работы.
